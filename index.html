@@ -45,6 +45,43 @@
     a:hover { color: var(--accent3); }
     ::selection { background: var(--accent2); color: #fff; }
 
+    /* Visible keyboard focus on every interactive element */
+    a:focus-visible,
+    button:focus-visible,
+    .skip-link:focus {
+      outline: 2px solid var(--accent3);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* Skip-to-content link, visible only when focused */
+    .skip-link {
+      position: absolute;
+      top: -100px; left: 1rem;
+      z-index: 1000;
+      background: var(--accent3);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.7rem 1.2rem;
+      border-radius: 4px;
+      transition: top 0.2s;
+    }
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
     /* ============================================================
        SCROLLBAR
     ============================================================ */
@@ -103,6 +140,22 @@
     }
     .nav-links a:hover { color: var(--accent); }
     .nav-links a::before { content: '// '; color: var(--accent); opacity: 0.6; }
+
+    /* Mobile nav toggle — hidden on desktop */
+    .nav-toggle {
+      display: none;
+      width: 44px; height: 44px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-toggle:hover { border-color: var(--accent); }
 
     /* ============================================================
        SECTION BASE
@@ -183,6 +236,38 @@
       font-size: 1.05rem;
       opacity: 0;
       animation: fadeUp 0.6s 0.8s forwards;
+    }
+    .hero-desc strong { color: var(--text-head); font-weight: 600; }
+
+    /* Status badge — a small monitoring/SOC-style availability chip.
+       This is the hero's signature element: it reframes "looking for
+       an internship" as a live system status, in the language of the
+       dashboards this portfolio is about. */
+    .hero-status {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      margin-top: 2rem;
+      padding: 0.5rem 1rem;
+      background: rgba(0,255,136,0.06);
+      border: 1px solid rgba(0,255,136,0.25);
+      border-radius: 20px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      color: var(--accent3);
+      opacity: 0;
+      animation: fadeUp 0.6s 0.9s forwards;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      background: var(--accent3);
+      border-radius: 50%;
+      box-shadow: var(--glow2);
+      animation: pulseDot 1.8s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
     }
     .hero-btns {
       display: flex; gap: 1rem; flex-wrap: wrap;
@@ -373,10 +458,93 @@
        PROJECTS
     ============================================================ */
     #projects { border-top: 1px solid var(--border); }
+
+    .featured-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .featured-project {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 0;
+      background: var(--bg3);
+      border: 1px solid rgba(0,212,255,0.35);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 3rem;
+      box-shadow: 0 0 0 1px rgba(0,212,255,0.05), var(--glow);
+    }
+    .featured-project-main { padding: 2.4rem; }
+    .featured-project-side {
+      padding: 2.4rem;
+      background: var(--bg2);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+    }
+    .featured-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      background: rgba(0,255,136,0.08);
+      border: 1px solid rgba(0,255,136,0.25);
+      border-radius: 20px;
+      padding: 0.3rem 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .featured-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-head);
+      margin-bottom: 0.9rem;
+    }
+    .featured-desc {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      margin-bottom: 1.4rem;
+    }
+    .featured-pipeline {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      display: flex; flex-direction: column; gap: 0.5rem;
+      margin-top: auto;
+    }
+    .featured-pipeline .step {
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .featured-pipeline .step::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      box-shadow: var(--glow);
+    }
+    .featured-pipeline .step-arrow {
+      color: var(--text-dim);
+      padding-left: 3px;
+    }
+    .other-projects-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .featured-project-side { border-left: none; border-top: 1px solid var(--border); }
     }
     .project-card {
       background: var(--bg3);
@@ -653,18 +821,40 @@
        MOBILE / RESPONSIVE
     ============================================================ */
     @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
+      nav { padding: 0.85rem 1.5rem; }
+      .nav-toggle { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: 61px; left: 0; right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+      .nav-links.open { max-height: 320px; }
+      .nav-links li { width: 100%; }
+      .nav-links a {
+        display: block;
+        padding: 1rem 1.5rem;
+        min-height: 44px;
+        border-bottom: 1px solid var(--border);
+      }
       section { padding: 4rem 1.5rem; }
       .about-grid { grid-template-columns: 1fr; }
       .contact-grid { grid-template-columns: 1fr; }
       .github-card { padding: 2rem 1.5rem; }
       .resume-box { flex-direction: column; }
       footer { flex-direction: column; text-align: center; }
+      .featured-project { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
 
   <!-- Grid background -->
   <div class="grid-bg"></div>
@@ -674,7 +864,8 @@
   ==================================================== -->
   <nav>
     <div class="nav-logo">AM<span>_</span></div>
-    <ul class="nav-links">
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu">☰</button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#about">about</a></li>
       <li><a href="#skills">skills</a></li>
       <li><a href="#projects">projects</a></li>
@@ -683,29 +874,35 @@
     </ul>
   </nav>
 
+  <main id="main">
+
   <!-- ====================================================
        HERO
   ==================================================== -->
-  <section id="hero">
-    <p class="hero-tag">&gt; initializing portfolio.sh</p>
+  <section id="hero" aria-label="Introduction">
+    <p class="hero-tag">&gt; whoami</p>
     <h1 class="hero-name">
       Ahmed<br>
       <span class="accent-word">Mustafa</span>
     </h1>
-    <div class="hero-role">
-      <h1>Cybersecurity | Digital Forensics | SOC | AI Security | AI/ML | Vulnerability Management </h1>
-      <span class="sep">|</span>
-      Aspiring Security Analyst
-      <span class="sep">|</span>
-      SOC &amp; Forensics
-      <span class="cursor"></span>
-    </div>
+    <p class="hero-role">
+      Cybersecurity
+      <span class="sep">·</span>
+      Digital Forensics
+      <span class="sep">·</span>
+      AI Security
+      <span class="cursor" aria-hidden="true"></span>
+    </p>
     <p class="hero-desc">
-      Cybersecurity student focused on digital forensics, security operations, malware analysis, and AI-assisted security solutions.
+      I trace what attackers leave behind — and teach machines to help find it faster. <strong>BS Cybersecurity student</strong> building AI-assisted forensics tools, from SOC detection labs to computer-vision evidence analysis.
     </p>
     <div class="hero-btns">
       <a href="#projects" class="btn btn-primary">View Projects</a>
       <a href="#contact" class="btn btn-outline">Contact Me</a>
+    </div>
+    <div class="hero-status">
+      <span class="status-dot" aria-hidden="true"></span>
+      STATUS: OPEN TO INTERNSHIPS &amp; SOC/DFIR ROLES
     </div>
     <div class="hero-scroll">
       <div class="scroll-line"></div>
@@ -716,10 +913,10 @@
   <!-- ====================================================
        ABOUT
   ==================================================== -->
-  <section id="about">
+  <section id="about" aria-labelledby="about-title">
     <div class="reveal">
       <p class="section-label">// about me</p>
-      <h2 class="section-title">Who I Am</h2>
+      <h2 class="section-title" id="about-title">Who I Am</h2>
       <div class="section-divider"></div>
     </div>
     <div class="about-grid reveal">
@@ -734,10 +931,10 @@
           I believe in <strong>learning by doing</strong>: whether that's building a keylogger for educational exploration, building an AI-based intrusion detection system, or dissecting malware behavior in a sandboxed environment.
         </p>
         <div class="about-links">
-          <a href="mailto:ahmedmustafa.inbox@gmail.com" class="link-pill">✉ Email</a>
-          <a href="http://www.linkedin.com/in/meetmustafa39b" target="_blank" class="link-pill">in LinkedIn</a>
-          <a href="https://github.com/Ahmed-Mustafa-2005" target="_blank" class="link-pill">⌥ GitHub</a>
-          <a href="https://medium.com/@ahmedmustafa.inbox" target="_blank" class="link-pill">✍ Medium</a>
+          <a href="mailto:ahmedmustafa.inbox@gmail.com" class="link-pill"><span aria-hidden="true">✉</span> Email</a>
+          <a href="http://www.linkedin.com/in/meetmustafa39b" target="_blank" rel="noopener" class="link-pill">LinkedIn</a>
+          <a href="https://github.com/Ahmed-Mustafa-2005" target="_blank" rel="noopener" class="link-pill"><span aria-hidden="true">⌥</span> GitHub</a>
+          <a href="https://medium.com/@ahmedmustafa.inbox" target="_blank" rel="noopener" class="link-pill"><span aria-hidden="true">✍</span> Medium</a>
         </div>
       </div>
       <div class="about-stats">
@@ -764,10 +961,10 @@
   <!-- ====================================================
        SKILLS
   ==================================================== -->
-  <section id="skills">
+  <section id="skills" aria-labelledby="skills-title">
     <div class="reveal">
       <p class="section-label">// technical skills</p>
-      <h2 class="section-title">My Toolkit</h2>
+      <h2 class="section-title" id="skills-title">My Toolkit</h2>
       <div class="section-divider"></div>
     </div>
     <div class="skills-grid">
@@ -827,20 +1024,21 @@
   <!-- ====================================================
        PROJECTS
   ==================================================== -->
-  <section id="projects">
+  <section id="projects" aria-labelledby="projects-title">
     <div class="reveal">
       <p class="section-label">// projects</p>
-      <h2 class="section-title">Hands-On Work</h2>
+      <h2 class="section-title" id="projects-title">Hands-On Work</h2>
       <div class="section-divider"></div>
     </div>
-    <div class="projects-grid">
 
-      <!-- Project 1 -->
-      <div class="project-card reveal">
-        <div class="project-num">01 / FYP · COMPUTER FORENSICS</div>
-        <div class="project-title">ForensicEye — AI-Driven Digital Forensics Platform</div>
-        <p class="project-desc">
-          Final Year Project (Air University). An AI-powered desktop forensics platform that combines traditional forensic tools with LLMs and RAG to enable natural language evidence querying, semantic artifact search, attack chain reconstruction, and automated court-ready report generation.
+    <!-- Flagship project, pulled out of the grid so it reads as the thesis of this section -->
+    <p class="featured-label reveal">// flagship project</p>
+    <div class="featured-project reveal">
+      <div class="featured-project-main">
+        <span class="featured-eyebrow">FINAL YEAR PROJECT · COMPUTER FORENSICS</span>
+        <h3 class="featured-title">ForensicEye — AI-Driven Digital Forensics Platform</h3>
+        <p class="featured-desc">
+          A desktop forensics platform that pairs traditional DFIR tooling with an LLM + RAG layer, so an investigator can ask evidence questions in plain language and get answers grounded in the actual case data — not a hallucinated guess. Covers ingestion, artifact extraction, attack-chain reconstruction, and court-ready reporting, built to align with ISO/IEC 27037, NIST SP 800-86, and ACPO guidelines.
         </p>
         <div class="project-tools">
           <span class="tool-badge">Python 3.11</span>
@@ -852,27 +1050,34 @@
           <span class="tool-badge">Neo4j</span>
           <span class="tool-badge">Qdrant</span>
           <span class="tool-badge">PyQt6</span>
-          <span class="tool-badge">SQLite</span>
         </div>
-        <div class="project-steps">
-          <h4>// Key Steps</h4>
-          <ul>
-            <li>Built evidence ingestion module with SHA-256/MD5 chain-of-custody logging</li>
-            <li>Integrated Autopsy, bulk_extractor &amp; Volatility3 for artifact extraction</li>
-            <li>Implemented RAG pipeline (LlamaIndex + Qdrant) to ground LLM answers in real evidence</li>
-            <li>Built Neo4j attack-chain graph for cross-artifact relationship mapping</li>
-            <li>Added YARA-X malware scanning and AI threat explanation module</li>
-            <li>Designed PyQt6 desktop GUI with AI chat, artifact browser &amp; timeline tabs</li>
-            <li>Generated court-ready PDF reports via ReportLab with full audit trail</li>
-          </ul>
-          <div class="project-learned"><strong>Learned:</strong> How to architect a full forensic pipeline from evidence ingestion to AI-assisted analysis — and why RAG is essential to prevent hallucination in legal-grade AI tools. Compliant with ISO/IEC 27037, NIST SP 800-86, and ACPO Guidelines.</div>
+        <div class="project-learned"><strong>Learned:</strong> how to architect a full forensic pipeline from evidence ingestion to AI-assisted analysis, and why RAG is non-negotiable in a legal-grade AI tool.</div>
+      </div>
+      <div class="featured-project-side">
+        <h4 class="skill-cat-title" style="margin-bottom:1.4rem;">Evidence Pipeline</h4>
+        <div class="featured-pipeline">
+          <div class="step">Forensic image acquired</div>
+          <div class="step-arrow">↓</div>
+          <div class="step">SHA-256 / MD5 hash verification</div>
+          <div class="step-arrow">↓</div>
+          <div class="step">Artifact extraction (Autopsy, Volatility3)</div>
+          <div class="step-arrow">↓</div>
+          <div class="step">RAG-grounded AI analysis</div>
+          <div class="step-arrow">↓</div>
+          <div class="step">Attack-chain graph (Neo4j)</div>
+          <div class="step-arrow">↓</div>
+          <div class="step">Court-ready report (PDF)</div>
         </div>
       </div>
+    </div>
+
+    <p class="other-projects-label reveal">// other projects</p>
+    <div class="projects-grid">
 
       <!-- Project 2 -->
       <div class="project-card reveal">
         <div class="project-num">02 / PEN TESTING</div>
-        <div class="project-title">Web Application Penetration Test</div>
+        <h3 class="project-title">Web Application Penetration Test</h3>
         <p class="project-desc">
           Conducted a structured pentest against a deliberately vulnerable web application (DVWA) to practice identifying and exploiting common OWASP Top 10 vulnerabilities.
         </p>
@@ -898,7 +1103,7 @@
       <!-- Project 3 -->
       <div class="project-card reveal">
         <div class="project-num">03 / MALWARE</div>
-        <div class="project-title">Basic Malware Analysis (Static &amp; Dynamic)</div>
+        <h3 class="project-title">Basic Malware Analysis (Static &amp; Dynamic)</h3>
         <p class="project-desc">
           Analyzed a malware sample in an isolated VM environment using both static and dynamic techniques to understand its behavior, persistence mechanisms, and C2 communication.
         </p>
@@ -924,7 +1129,7 @@
       <!-- Project 4 -->
       <div class="project-card reveal">
         <div class="project-num">04 / SOC</div>
-        <div class="project-title">SOC Incident Detection Lab (Wazuh)</div>
+        <h3 class="project-title">SOC Incident Detection Lab (Wazuh)</h3>
         <p class="project-desc">
           Built a mini home-lab SOC using Wazuh SIEM to simulate real alert triage, correlate security events, and practice the skills used during my SOC internship at ITSOLERA.
         </p>
@@ -953,52 +1158,52 @@
   <!-- ====================================================
        EXPERIENCE & CERTIFICATIONS
   ==================================================== -->
-  <section id="experience">
+  <section id="experience" aria-labelledby="experience-title">
     <div class="reveal">
       <p class="section-label">// experience & certs</p>
-      <h2 class="section-title">Background</h2>
+      <h2 class="section-title" id="experience-title">Background</h2>
       <div class="section-divider"></div>
     </div>
     <div class="timeline">
 
       <div class="timeline-item reveal">
         <div class="tl-meta">Jul 2025 — Sep 2025</div>
-        <div class="tl-title">SOC Internship</div>
+        <h3 class="tl-title">SOC Internship</h3>
         <div class="tl-org">ITSOLERA Pvt Ltd</div>
         <div class="tl-desc">Completed hands-on training in threat monitoring, incident response, and log analysis within a professional SOC environment.</div>
       </div>
 
       <div class="timeline-item reveal">
         <div class="tl-meta">Jul 2025 · Forage</div>
-        <div class="tl-title">Mastercard Cybersecurity Virtual Experience Program</div>
+        <h3 class="tl-title">Mastercard Cybersecurity Virtual Experience Program</h3>
         <div class="tl-org">Forage (Mastercard)</div>
         <div class="tl-desc">Served as a simulated analyst on Mastercard's Security Awareness Team. Identified and reported phishing threats, and analyzed which business areas needed stronger security controls.</div>
       </div>
 
       <div class="timeline-item reveal">
         <div class="tl-meta">Certification · Security Blue Team</div>
-        <div class="tl-title">Introduction to Bash Scripting</div>
+        <h3 class="tl-title">Introduction to Bash Scripting</h3>
         <div class="tl-org">Security Blue Team (elearning.securityblue.team)</div>
         <div class="tl-desc">Learned automation fundamentals for Linux-based security tasks using Bash.</div>
       </div>
 
       <div class="timeline-item reveal">
         <div class="tl-meta">Certification · Security Blue Team</div>
-        <div class="tl-title">Introduction to Vulnerability Management</div>
+        <h3 class="tl-title">Introduction to Vulnerability Management</h3>
         <div class="tl-org">Security Blue Team</div>
         <div class="tl-desc">Covered vulnerability lifecycle, scanning methodologies, and remediation prioritization.</div>
       </div>
 
       <div class="timeline-item reveal">
         <div class="tl-meta">Certification · Cybrary</div>
-        <div class="tl-title">Nmap Basics</div>
+        <h3 class="tl-title">Nmap Basics</h3>
         <div class="tl-org">Cybrary</div>
         <div class="tl-desc">Network scanning, host discovery, service/version detection, and scripting engine fundamentals.</div>
       </div>
 
       <div class="timeline-item reveal">
         <div class="tl-meta">Nov 2024 · Event</div>
-        <div class="tl-title">CODEAIR Participation</div>
+        <h3 class="tl-title">CODEAIR Participation</h3>
         <div class="tl-org">Air University</div>
         <div class="tl-desc">Participated in the coding/tech competition at Air University Islamabad.</div>
       </div>
@@ -1009,19 +1214,19 @@
   <!-- ====================================================
        GITHUB
   ==================================================== -->
-  <section id="github">
+  <section id="github" aria-labelledby="github-title">
     <div class="reveal">
       <p class="section-label">// open source</p>
-      <h2 class="section-title">GitHub Profile</h2>
+      <h2 class="section-title" id="github-title">GitHub Profile</h2>
       <div class="section-divider"></div>
     </div>
     <div class="github-card reveal">
-      <div class="github-icon">⌥</div>
+      <div class="github-icon" aria-hidden="true">⌥</div>
       <h3>Proof of Practice</h3>
       <p>
-        My GitHub hosts scripts, tools, and academic projects built throughout my cybersecurity studies — including a Computer Forensics Tool, Keylogger, Windows Security Hardening Tool, and an AI-based Intrusion Detection System.
+        My GitHub hosts the projects above in full — commit history, READMEs, and source — including ForensicEye, the Wazuh SOC lab, and my malware analysis and pentesting work.
       </p>
-      <a href="https://github.com/Ahmed-Mustafa-2005" target="_blank" class="btn btn-outline">View on GitHub</a>
+      <a href="https://github.com/Ahmed-Mustafa-2005" target="_blank" rel="noopener" class="btn btn-outline">View on GitHub</a>
       <br><br>
       <span class="github-url">github.com/Ahmed-Mustafa-2005</span>
     </div>
@@ -1030,29 +1235,29 @@
   <!-- ====================================================
        RESUME
   ==================================================== -->
-  <section id="resume">
+  <section id="resume" aria-labelledby="resume-title">
     <div class="reveal">
       <p class="section-label">// resume</p>
-      <h2 class="section-title">Download CV</h2>
+      <h2 class="section-title" id="resume-title">Download CV</h2>
       <div class="section-divider"></div>
     </div>
     <div class="resume-box reveal">
       <div class="resume-info">
         <h3>Ahmed Mustafa — Cybersecurity Student</h3>
-        <p>BS Cybersecurity · Air University Islamabad · Updated 2025</p>
+        <p>BS Cybersecurity · Air University Islamabad · Updated August 2026</p>
       </div>
       <!-- Replace the href below with the actual path to the CV file when hosted -->
-      <a href="Ahmed_Mustafa_CV.pdf" download class="btn btn-primary">⬇ Download CV</a>
+      <a href="Ahmed_Mustafa_CV.pdf" download class="btn btn-primary"><span aria-hidden="true">⬇</span> Download CV</a>
     </div>
   </section>
 
   <!-- ====================================================
        CONTACT
   ==================================================== -->
-  <section id="contact">
+  <section id="contact" aria-labelledby="contact-title">
     <div class="reveal">
       <p class="section-label">// contact</p>
-      <h2 class="section-title">Get In Touch</h2>
+      <h2 class="section-title" id="contact-title">Get In Touch</h2>
       <div class="section-divider"></div>
     </div>
     <div class="contact-grid">
@@ -1066,35 +1271,35 @@
       </div>
       <div class="contact-items reveal">
         <div class="contact-item">
-          <div class="contact-icon">✉</div>
+          <div class="contact-icon" aria-hidden="true">✉</div>
           <div>
             <div class="contact-label">Email</div>
             <div class="contact-val"><a href="mailto:ahmedmustafa.inbox@gmail.com">ahmedmustafa.inbox@gmail.com</a></div>
           </div>
         </div>
         <div class="contact-item">
-          <div class="contact-icon">in</div>
+          <div class="contact-icon" aria-hidden="true">in</div>
           <div>
             <div class="contact-label">LinkedIn</div>
-            <div class="contact-val"><a href="http://www.linkedin.com/in/meetmustafa39b" target="_blank">linkedin.com/in/meetmustafa39b</a></div>
+            <div class="contact-val"><a href="http://www.linkedin.com/in/meetmustafa39b" target="_blank" rel="noopener">linkedin.com/in/meetmustafa39b</a></div>
           </div>
         </div>
         <div class="contact-item">
-          <div class="contact-icon">⌥</div>
+          <div class="contact-icon" aria-hidden="true">⌥</div>
           <div>
             <div class="contact-label">GitHub</div>
-            <div class="contact-val"><a href="https://github.com/Ahmed-Mustafa-2005" target="_blank">github.com/Ahmed-Mustafa-2005</a></div>
+            <div class="contact-val"><a href="https://github.com/Ahmed-Mustafa-2005" target="_blank" rel="noopener">github.com/Ahmed-Mustafa-2005</a></div>
           </div>
         </div>
         <div class="contact-item">
-          <div class="contact-icon">✍</div>
+          <div class="contact-icon" aria-hidden="true">✍</div>
           <div>
             <div class="contact-label">Medium (Blog)</div>
-            <div class="contact-val"><a href="https://medium.com/@ahmedmustafa.inbox" target="_blank">medium.com/@ahmedmustafa.inbox</a></div>
+            <div class="contact-val"><a href="https://medium.com/@ahmedmustafa.inbox" target="_blank" rel="noopener">medium.com/@ahmedmustafa.inbox</a></div>
           </div>
         </div>
         <div class="contact-item">
-          <div class="contact-icon">📍</div>
+          <div class="contact-icon" aria-hidden="true">📍</div>
           <div>
             <div class="contact-label">Location</div>
             <div class="contact-val">Rawalpindi / Islamabad, Pakistan</div>
@@ -1104,11 +1309,13 @@
     </div>
   </section>
 
+  </main>
+
   <!-- ====================================================
        FOOTER
   ==================================================== -->
   <footer>
-    <p>© 2025 <span>Ahmed Mustafa</span> — Cybersecurity Student</p>
+    <p>© 2026 <span>Ahmed Mustafa</span> — Cybersecurity Student</p>
     <p>Built with <span>HTML · CSS · JS</span> — No frameworks needed.</p>
   </footer>
 
@@ -1132,6 +1339,24 @@
     }, { threshold: 0.1 });
 
     revealElements.forEach(el => observer.observe(el));
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinksEl = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinksEl.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      navToggle.textContent = isOpen ? '✕' : '☰';
+      navToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    });
+    navLinksEl.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinksEl.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.textContent = '☰';
+        navToggle.setAttribute('aria-label', 'Open menu');
+      });
+    });
 
     // Active nav link highlight on scroll
     const sections = document.querySelectorAll('section[id]');
